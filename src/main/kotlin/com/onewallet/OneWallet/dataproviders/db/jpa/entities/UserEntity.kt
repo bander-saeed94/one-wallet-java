@@ -1,16 +1,18 @@
 package com.onewallet.OneWallet.dataproviders.db.jpa.entities
 
 import com.onewallet.OneWallet.core.entities.User
+import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "users")
 class UserEntity(
         @Id
-        val phoneNumber: Double,
+        val userId: UUID = UUID.randomUUID(),
+        @Column(unique = true)
+        val phoneNumber: String,
         val password: String? = null,
         val registrationId: String? = null,
         val apnRegistrationId: String? = null,
@@ -21,6 +23,7 @@ class UserEntity(
 //mappers
 fun UserEntity.toUser() =
         User(
+                this.userId,
                 this.phoneNumber,
                 this.password,
                 this.registrationId,
@@ -31,6 +34,7 @@ fun UserEntity.toUser() =
 
 fun User.toUserEntity() =
         UserEntity(
+                this.userId,
                 this.phoneNumber,
                 this.password,
                 this.registrationId,

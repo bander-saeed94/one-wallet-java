@@ -2,7 +2,7 @@ package com.onewallet.OneWallet.delivery.config
 
 import com.onewallet.OneWallet.dataproviders.db.jpa.repositories.DBUserRepository
 import com.onewallet.OneWallet.dataproviders.db.jpa.repositories.JpaUserRepository
-import com.onewallet.OneWallet.delivery.rest.imp.UserResourceImp
+import com.onewallet.OneWallet.delivery.rest.imp.AccountResourceImp
 import com.onewallet.OneWallet.usecases.UseCaseExecutor
 import com.onewallet.OneWallet.usecases.UseCaseExecutorImp
 import com.onewallet.OneWallet.usecases.gateways.UserRepository
@@ -15,10 +15,10 @@ class Module {
 
     //Resources
     @Bean
-    fun userResourceImp(
+    fun accountResourceImp(
             useCaseExecutor: UseCaseExecutor,
             registerUserByPhoneNumberUseCase: RegisterUserByPhoneNumberUseCase
-    ) = UserResourceImp(useCaseExecutor, registerUserByPhoneNumberUseCase)
+    ) = AccountResourceImp(useCaseExecutor, registerUserByPhoneNumberUseCase)
 
     @Bean
     fun useCaseExecutor() = UseCaseExecutorImp()
