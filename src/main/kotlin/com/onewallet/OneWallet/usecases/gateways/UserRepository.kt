@@ -1,0 +1,5 @@
+package com.onewallet.OneWallet.usecases.gateways
+
+import com.onewallet.OneWallet.usecases.user.RegisterUserByPhoneNumberUseCase
+
+interface UserRepository: RegisterUserByPhoneNumberUseCase.UserRepository
