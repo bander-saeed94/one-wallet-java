@@ -17,7 +17,8 @@ class UserEntity(
         val registrationId: String? = null,
         val apnRegistrationId: String? = null,
         val gcmRegistrationId: String? = null,
-        val verifiedByPhoneNumber: Boolean = false
+        val verifiedByPhoneNumber: Boolean = false,
+        val createdAt: LocalDateTime = LocalDateTime.now()
 )
 
 //mappers

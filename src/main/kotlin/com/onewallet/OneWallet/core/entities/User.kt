@@ -10,10 +10,7 @@ data class User(
         val apnRegistrationId: String? = null,
         val gcmRegistrationId: String? = null,
         val verifiedByPhoneNumber: Boolean = false
-){
-    constructor(phoneNumber: String): this(UUID.randomUUID(), phoneNumber)
-}
-
+)
 
 fun User.isValid(): Boolean {
     return this.isValidPhoneNumber()

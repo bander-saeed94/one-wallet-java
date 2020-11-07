@@ -1,34 +1,65 @@
 package com.onewallet.OneWallet.usecases.user
 
+import com.onewallet.OneWallet.core.entities.Otp
 import com.onewallet.OneWallet.core.entities.User
 import com.onewallet.OneWallet.core.entities.isValid
 import com.onewallet.OneWallet.usecases.UseCase
+import com.onewallet.OneWallet.usecases.exceptions.BusinessException
 import com.onewallet.OneWallet.usecases.exceptions.ValidationException
-import java.sql.SQLException
 
-class RegisterUserByPhoneNumberUseCase(private val userRepository: UserRepository) : UseCase<User, Unit> {
+class RegisterUserByPhoneNumberUseCase(
+        private val userRepository: UserRepository,
+        private val otpRepository: OtpRepository,
+        private val smsSender: SmsSender,
+        private val otpUtil: OtpUtil
+) : UseCase<User, Unit> {
 
     override fun execute(request: User) {
-        if(!request.isValid()){
+        if (!request.isValid()) {
             throw ValidationException("invalid phoneNumber")
         }
+        val user = userRepository.findByPhoneNumber(request.phoneNumber)
+        val userExists = user!= null
+//        val userExistsAndVerified = userExists && user!!.verifiedByPhoneNumber
+//        if (userExistsAndVerified) {
+//            throw BusinessException("user is already verified")
+//        }
+
         try {
-            userRepository.save(request)
-        } catch (e: Exception){
-            if(e is SQLException){
-                println(e)
-                throw ValidationException(e.sqlState)
+            val otp = otpUtil.generate(60, "SHA1", 4)
+
+            smsSender.sendOtp(request.phoneNumber, otp.token)
+            otpRepository.save(otp, request.phoneNumber)
+            if(!userExists){
+                userRepository.save(request)
             }
-            throw ValidationException(e.message ?: "unknown message")
+        } catch (e: Exception) {
+            throw BusinessException(e.message ?: "unknown message")
         }
     }
 
     interface UserRepository {
-        /***
-         * Throw exception if user already exist with provided number
-         */
         fun save(user: User)
+        fun findByPhoneNumber(phoneNumber: String): User?
     }
 
+    interface OtpRepository {
+        fun save(otp: Otp, phoneNumber: String)
+    }
+
+    interface OtpUtil {
+        fun generate(timeInterval: Int, alg: String, digits: Int): Otp
+        fun verify(
+                timeInterval: Int,
+                alg: String,
+                digits: Int,
+                enteredToken: Int,
+                secret: String
+        ): Boolean;
+    }
+
+    interface SmsSender {
+        fun sendOtp(phoneNumber: String, otp: String)
+    }
 
 }

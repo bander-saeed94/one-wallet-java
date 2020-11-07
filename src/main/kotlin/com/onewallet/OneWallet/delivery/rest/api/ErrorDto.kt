@@ -7,5 +7,6 @@ data class ErrorDto(
 
 enum class ErrorCodeDto {
     NOT_FOUND,
-    VALIDATION_ERROR
+    VALIDATION_ERROR,
+    BUSINESS_ERROR
 }

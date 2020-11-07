@@ -2,6 +2,7 @@ package com.onewallet.OneWallet.delivery.rest.imp
 
 import com.onewallet.OneWallet.delivery.rest.api.ErrorCodeDto
 import com.onewallet.OneWallet.delivery.rest.api.ErrorDto
+import com.onewallet.OneWallet.usecases.exceptions.BusinessException
 import com.onewallet.OneWallet.usecases.exceptions.NotFoundException
 import com.onewallet.OneWallet.usecases.exceptions.ValidationException
 import org.springframework.http.HttpStatus
@@ -22,4 +23,9 @@ private class GlobalExceptionHandler: ResponseEntityExceptionHandler() {
     @ExceptionHandler(ValidationException::class)
     fun alreadyExists(ex: ValidationException) =
             ResponseEntity(ErrorDto(ErrorCodeDto.VALIDATION_ERROR, ex.message), HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(BusinessException::class)
+    fun businessError(ex: BusinessException) =
+            ResponseEntity(ErrorDto(ErrorCodeDto.BUSINESS_ERROR, ex.message), HttpStatus.BAD_REQUEST)
+
 }
