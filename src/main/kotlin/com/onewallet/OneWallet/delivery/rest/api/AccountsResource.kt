@@ -13,4 +13,10 @@ interface AccountsResource {
                       @PathVariable("phoneNumber") phoneNumber: String
     ): CompletionStage<ResponseEntity<Unit>>
 
+
+    @PutMapping("/code/{verification_code}")
+    fun verifyAccount(@PathVariable("verification_code") verificationCode: String,
+                      @RequestHeader("Authorization") authorizationHeader:  String,
+                      @RequestBody body: VerifyUserBody
+    ): CompletionStage<ResponseEntity<Unit>>
 }

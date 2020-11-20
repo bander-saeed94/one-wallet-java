@@ -6,6 +6,7 @@ import com.onewallet.OneWallet.core.entities.isValid
 import com.onewallet.OneWallet.usecases.UseCase
 import com.onewallet.OneWallet.usecases.exceptions.BusinessException
 import com.onewallet.OneWallet.usecases.exceptions.ValidationException
+import com.onewallet.OneWallet.usecases.gateways.util.OtpUtil
 
 class RegisterUserByPhoneNumberUseCase(
         private val userRepository: UserRepository,
@@ -45,17 +46,6 @@ class RegisterUserByPhoneNumberUseCase(
 
     interface OtpRepository {
         fun save(otp: Otp, phoneNumber: String)
-    }
-
-    interface OtpUtil {
-        fun generate(timeInterval: Int, alg: String, digits: Int): Otp
-        fun verify(
-                timeInterval: Int,
-                alg: String,
-                digits: Int,
-                enteredToken: Int,
-                secret: String
-        ): Boolean;
     }
 
     interface SmsSender {

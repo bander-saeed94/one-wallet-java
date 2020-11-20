@@ -1,5 +1,6 @@
 package com.onewallet.OneWallet.usecases.gateways.repo
 
 import com.onewallet.OneWallet.usecases.user.RegisterUserByPhoneNumberUseCase
+import com.onewallet.OneWallet.usecases.user.VerifyUserUseCase
 
-interface UserRepository: RegisterUserByPhoneNumberUseCase.UserRepository
+interface UserRepository: RegisterUserByPhoneNumberUseCase.UserRepository, VerifyUserUseCase.UserRepository

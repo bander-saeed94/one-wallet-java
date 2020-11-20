@@ -1,7 +1,8 @@
 package com.onewallet.OneWallet.dataproviders.db.jpa.entities
 
 import com.onewallet.OneWallet.core.entities.User
-import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
@@ -18,7 +19,8 @@ class UserEntity(
         val apnRegistrationId: String? = null,
         val gcmRegistrationId: String? = null,
         val verifiedByPhoneNumber: Boolean = false,
-        val createdAt: LocalDateTime = LocalDateTime.now()
+        val createdAt: LocalDateTime = LocalDateTime.now(),
+        val updatedAt: LocalDateTime?
 )
 
 //mappers
@@ -41,5 +43,6 @@ fun User.toUserEntity() =
                 this.registrationId,
                 this.apnRegistrationId,
                 this.gcmRegistrationId,
-                this.verifiedByPhoneNumber
+                this.verifiedByPhoneNumber,
+                updatedAt = LocalDateTime.now()
         )

@@ -11,7 +11,6 @@ class OtpUtilFakeImp : OtpUtil{
             6 -> (0..1000000).random().toString().padStart(digits, '0')      // 0-999999
             else -> (0..10000).random().toString().padStart(digits, '0')     // 0-9999
         }
-                (0..1000).random().toString(); // 0-9
         println("generated token: ${token}")
         val secret = "secret$token";
         return Otp(
@@ -23,7 +22,7 @@ class OtpUtilFakeImp : OtpUtil{
         )
     }
 
-    override fun verify(timeInterval: Int, alg: String, digits: Int, enteredToken: Int, secret: String): Boolean {
+    override fun verify(enteredToken: String, secret: String, timeInterval: Int, alg: String, digits: Int): Boolean {
         if (secret == "secret$enteredToken") {
             return true;
         }
